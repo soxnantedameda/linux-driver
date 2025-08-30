@@ -1,0 +1,113 @@
+#
+# hollyland custom driver configuration
+#
+
+menu "hollyland drivers"
+
+config HOLLYLAND_DRIVERS
+	tristate "hollyland drivers"
+	default y
+	help
+		drivers for hollyland platform
+
+if HOLLYLAND_DRIVERS
+
+config AW95016
+	tristate "Support for AW95016"
+	depends on I2C && LEDS_CLASS
+
+config AW37004
+	tristate "Support for AW37004"
+	default n
+	select REGMAP_I2C
+	depends on I2C && REGULATOR
+	help
+		Aw37004 camera pmic chip
+
+config GS2972
+	tristate "GS2972 driver"
+	depends on SPI
+	help
+		gs2972 spi driver
+
+config GMM626
+	tristate "GMM626 driver"
+	depends on SPI
+	help
+		gmm626 spi driver
+
+config STK8329
+	tristate "skt8329 driver"
+	default n
+	depends on I2C && IIO
+	select IIO_BUFFER
+	select IIO_TRIGGERED_BUFFER
+	help
+		skt8329 x/y/z asix sensor.
+
+config SGM7220
+	tristate "sgm7220 driver base on i2c"
+	depends on I2C && EXTCON
+	default n
+	help
+		Sgm7220 type-C otg.
+
+config GSV2K11
+	tristate "gsv2k11 driver"
+	default n
+	depends on I2C
+	help
+		gsv2k11 hdmi/bt driver.
+
+config LTR381RGB
+	tristate "ltr381rgb driver"
+	default n
+	depends on I2C && IIO
+	help
+		ltr381rgb light sensor driver.
+
+config HISI_TSENSOR
+	tristate "hisi thermal sensor driver"
+	default n
+	depends on THERMAL
+	help
+		hisi thermal sensor driver.
+
+config HISI_CPUFREQ
+	tristate "hisi cpufreq driver"
+	default n
+	depends on CPU_FREQ && HAVE_CLK && OF
+	help
+		hisi cpufreq driver.
+
+config HISI_SVB
+	tristate "hisi svb driver"
+	default n
+	depends on REGULATOR
+	help
+		hisi svb driver.
+
+config AW87559
+	tristate "aw87559 driver"
+	default n
+	help
+		aw87559 driver.
+
+config AW89402
+	tristate "aw89402 driver"
+	default n
+	help
+		aw89402 adc driver.
+
+config AW35616
+tristate "aw35616 driver base on i2c"
+depends on I2C && EXTCON
+default n
+help
+	aw35616 type-C otg.
+
+source "drivers/hollyland/sh5001a/Kconfig"
+
+endif
+
+endmenu

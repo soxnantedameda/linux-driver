@@ -1,0 +1,1 @@
+obj-$(CONFIG_AW37004)	+= aw37004.o

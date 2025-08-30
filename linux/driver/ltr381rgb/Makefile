@@ -1,0 +1,1 @@
+obj-$(CONFIG_LTR381RGB) += ltr381rgb.o

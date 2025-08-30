@@ -1,0 +1,1 @@
+obj-$(CONFIG_HISI_CPUFREQ) += hisi_cpufreq.o

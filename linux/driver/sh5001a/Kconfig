@@ -1,0 +1,27 @@
+config SH5001A
+	tristate "driver for sh5001a 6d sensor"
+	depends on (SPI || I2C) && IIO
+	select IIO_TRIGGER
+	select IIO_TRIGGERED_BUFFER
+	default n
+	help
+		sh5001a 6d sensor
+
+if SH5001A
+
+choice
+	bool "sh5001a mode selection"
+
+config SH5001A_SPI
+	bool "spi mode"
+	depends on SH5001A && SPI
+	select REGMAP_SPI
+
+config SH5001A_I2C
+	bool "i2c mode"
+	depends on SH5001A && I2C
+	select REGMAP_I2C
+
+endchoice
+
+endif

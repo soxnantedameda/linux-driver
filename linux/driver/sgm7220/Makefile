@@ -1,0 +1,1 @@
+obj-$(CONFIG_SGM7220) += sgm7220.o
