@@ -221,6 +221,6 @@ static struct platform_driver hisi_svb_pwm_driver = {
 };
 module_platform_driver(hisi_svb_pwm_driver);
 
-MODULE_AUTHOR("<zhiwen.liang@hollyland-tech.com>");
+MODULE_AUTHOR("<897420073@qq.com>");
 MODULE_DESCRIPTION("Driver for hisi svb pwm");
 MODULE_LICENSE("GPL and additional rights");

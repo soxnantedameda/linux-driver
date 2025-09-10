@@ -212,7 +212,7 @@ static struct i2c_driver aw87559_i2c_driver = {
 };
 module_i2c_driver(aw87559_i2c_driver);
 
-MODULE_AUTHOR("<zhiwen.liang@hollyland-tech.com>");
+MODULE_AUTHOR("<897420073@qq.com>");
 MODULE_DESCRIPTION("Driver for aw87559 speaker");
 MODULE_LICENSE("GPL and additional rights");
 

@@ -1019,7 +1019,7 @@ static struct spi_driver ssd2828_spi_driver = {
 };
 module_spi_driver(ssd2828_spi_driver);
 
-MODULE_AUTHOR("<zhiwen.liang@hollyland-tech.com>");
+MODULE_AUTHOR("<897420073@qq.com>");
 MODULE_DESCRIPTION("Driver for ssd2828");
 MODULE_LICENSE("GPL and additional rights");
 

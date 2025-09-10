@@ -822,6 +822,6 @@ static struct i2c_driver ltr381rgb_i2c_driver = {
 };
 module_i2c_driver(ltr381rgb_i2c_driver);
 
-MODULE_AUTHOR("<zhiwen.liang@hollyland-tech.com>");
+MODULE_AUTHOR("<897420073@qq.com>");
 MODULE_DESCRIPTION("Driver for ltr381rgb");
 MODULE_LICENSE("GPL and additional rights");

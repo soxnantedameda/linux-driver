@@ -270,6 +270,6 @@ static struct platform_driver hisi_cpufreq_platdrv = {
 };
 module_platform_driver(hisi_cpufreq_platdrv);
 
-MODULE_AUTHOR("<zhiwen.liang@hollyland-tech.com>");
+MODULE_AUTHOR("<897420073@qq.com>");
 MODULE_DESCRIPTION("Driver for hisi cpufreq");
 MODULE_LICENSE("GPL and additional rights");

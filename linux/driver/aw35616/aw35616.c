@@ -420,6 +420,6 @@ static struct i2c_driver aw35616_i2c_driver = {
 };
 module_i2c_driver(aw35616_i2c_driver);
 
-MODULE_AUTHOR("<zhiwen.liang@hollyland-tech.com>");
+MODULE_AUTHOR("<897420073@qq.com>");
 MODULE_DESCRIPTION("Driver for aw35616");
 MODULE_LICENSE("GPL");

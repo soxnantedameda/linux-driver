@@ -706,6 +706,6 @@ static struct i2c_driver stk8329_driver = {
 };
 module_i2c_driver(stk8329_driver);
 
-MODULE_AUTHOR("<zhiwen.liang@hollyland-tech.com>");
+MODULE_AUTHOR("<897420073@qq.com>");
 MODULE_DESCRIPTION("Driver for stk8329");
 MODULE_LICENSE("GPL and additional rights");

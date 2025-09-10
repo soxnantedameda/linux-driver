@@ -607,6 +607,6 @@ static struct spi_driver gmm626_spi_driver = {
 };
 module_spi_driver(gmm626_spi_driver);
 
-MODULE_AUTHOR("<zhiwen.liang@hollyland-tech.com>");
+MODULE_AUTHOR("<897420073@qq.com>");
 MODULE_DESCRIPTION("Driver for gmm626");
 MODULE_LICENSE("GPL and additional rights");
