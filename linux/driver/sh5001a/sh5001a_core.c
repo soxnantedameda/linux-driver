@@ -190,7 +190,7 @@ static const struct {
 static IIO_CONST_ATTR(in_accel_sampling_frequency_available,
 	"125 250 500 1000 2000 4000 8000");
 
-static int sh5001a_set_acc_sampel_rate(struct sh5001a_data *sh5001a, int val)
+static int sh5001a_set_acc_sample_rate(struct sh5001a_data *sh5001a, int val)
 {
 	int i;
 
@@ -206,7 +206,7 @@ static int sh5001a_set_acc_sampel_rate(struct sh5001a_data *sh5001a, int val)
 	return -EINVAL;
 }
 
-static int sh5001a_get_acc_sampel_rate(struct sh5001a_data *sh5001a, int *val)
+static int sh5001a_get_acc_sample_rate(struct sh5001a_data *sh5001a, int *val)
 {
 	u32 reg_val;
 	int i;
@@ -304,7 +304,7 @@ static const struct {
 	{SH5001_GYRO_ODR_16000HZ, 16000}
 };
 
-static int sh5001a_set_gyro_sampel_rate(struct sh5001a_data *sh5001a, int val)
+static int sh5001a_set_gyro_sample_rate(struct sh5001a_data *sh5001a, int val)
 {
 	int i;
 
@@ -320,7 +320,7 @@ static int sh5001a_set_gyro_sampel_rate(struct sh5001a_data *sh5001a, int val)
 	return -EINVAL;
 }
 
-static int sh5001a_get_gyro_sampel_rate(struct sh5001a_data *sh5001a, int *val)
+static int sh5001a_get_gyro_sample_rate(struct sh5001a_data *sh5001a, int *val)
 {
 	u32 reg_val;
 	int i;
@@ -469,7 +469,7 @@ static const struct {
 	{SH5001_TEMP_ODR_500HZ, 500},
 };
 
-static int sh5001a_set_temp_sampel_rate(struct sh5001a_data *sh5001a, int val)
+static int sh5001a_set_temp_sample_rate(struct sh5001a_data *sh5001a, int val)
 {
 	int i;
 
@@ -485,7 +485,7 @@ static int sh5001a_set_temp_sampel_rate(struct sh5001a_data *sh5001a, int val)
 	return -EINVAL;
 }
 
-static int sh5001a_get_temp_sampel_rate(struct sh5001a_data *sh5001a, int *val)
+static int sh5001a_get_temp_sample_rate(struct sh5001a_data *sh5001a, int *val)
 {
 	u32 reg_val;
 	int i;
@@ -612,13 +612,13 @@ static int sh5001a_read_raw(struct iio_dev *indio_dev,
 	case IIO_CHAN_INFO_SAMP_FREQ:
 		switch(chan->type) {
 		case IIO_ACCEL:
-			ret = sh5001a_get_acc_sampel_rate(sh5001a, val);
+			ret = sh5001a_get_acc_sample_rate(sh5001a, val);
 			break;
 		case IIO_ANGL_VEL:
-			ret = sh5001a_get_gyro_sampel_rate(sh5001a, val);
+			ret = sh5001a_get_gyro_sample_rate(sh5001a, val);
 			break;
 		case IIO_TEMP:
-			ret = sh5001a_get_temp_sampel_rate(sh5001a, val);
+			ret = sh5001a_get_temp_sample_rate(sh5001a, val);
 			break;
 		default:
 			ret = -EINVAL;
@@ -669,13 +669,13 @@ static int sh5001a_write_raw(struct iio_dev *indio_dev,
 	case IIO_CHAN_INFO_SAMP_FREQ:
 		switch(chan->type) {
 		case IIO_ACCEL:
-			ret = sh5001a_set_acc_sampel_rate(sh5001a, val);
+			ret = sh5001a_set_acc_sample_rate(sh5001a, val);
 			break;
 		case IIO_ANGL_VEL:
-			ret = sh5001a_set_gyro_sampel_rate(sh5001a, val);
+			ret = sh5001a_set_gyro_sample_rate(sh5001a, val);
 			break;
 		case IIO_TEMP:
-			ret = sh5001a_set_temp_sampel_rate(sh5001a, val);
+			ret = sh5001a_set_temp_sample_rate(sh5001a, val);
 			break;
 		default:
 			ret = -EINVAL;
@@ -809,86 +809,6 @@ static void sh5001a_soft_reset(struct sh5001a_data *sh5001a)
 	mdelay(100);
 }
 
-static void sh5001a_drive_start(struct sh5001a_data *sh5001a)
-{
-	u32 regData = 0;
-
-	regData = 0x01;
-	regmap_write(sh5001a->regmap, 0x2b, regData);
-	mdelay(2);
-	regData = 0x00;
-	regmap_write(sh5001a->regmap, 0x2b, regData);
-	mdelay(1);
-}
-
-static void sh5001a_adc_reset(struct sh5001a_data *sh5001a)
-{
-	u32 regData = 0;
-
-	regData = 0x08;
-	regmap_write(sh5001a->regmap, 0x30, regData);
-	regData = 0x00;
-	regmap_write(sh5001a->regmap, 0xd2, regData);
-	regData = 0x6B;
-	regmap_write(sh5001a->regmap, 0xd1, regData);
-	regData = 0x02;
-	regmap_write(sh5001a->regmap, 0xd5, regData);
-	mdelay(5);
-	regData = 0x68;
-	regmap_write(sh5001a->regmap, 0xd1, regData);
-	mdelay(2);
-	regData = 0x00;
-	regmap_write(sh5001a->regmap, 0xd5, 0x00);
-	regData = 0x00;
-	regmap_write(sh5001a->regmap, 0x30, 0x00);
-	mdelay(50);
-}
-
-static void sh5001a_cva_reset(struct sh5001a_data *sh5001a)
-{
-
-	u32 regData = 0;
-	u32 regDEData = 0;
-
-	regmap_write(sh5001a->regmap, 0xDE, regDEData);
-
-	regData = regDEData & 0xC7;
-	regmap_write(sh5001a->regmap, 0xDE, regData);
-	mdelay(5);
-
-	regData = regDEData | 0x38;
-	regmap_write(sh5001a->regmap, 0xDE, regData);
-	mdelay(5);
-
-	regmap_write(sh5001a->regmap, 0xDE, regDEData);
-	mdelay(5);
-
-	regData = 0x12;
-	regmap_write(sh5001a->regmap, 0xCD, regData);
-	regData = 0x12;
-	regmap_write(sh5001a->regmap, 0xCE, regData);
-	regData = 0x12;
-	regmap_write(sh5001a->regmap, 0xCF, regData);
-
-	mdelay(1);
-
-	regData = 0x2;
-	regmap_write(sh5001a->regmap, 0xCD, regData);
-	regData = 0x2;
-	regmap_write(sh5001a->regmap, 0xCE, regData);
-	regData = 0x2;
-	regmap_write(sh5001a->regmap, 0xCF, regData);
-}
-
-static void sh5001a_module_reset(struct sh5001a_data *sh5001a)
-{
-	sh5001a_soft_reset(sh5001a);
-	sh5001a_drive_start(sh5001a);
-	sh5001a_adc_reset(sh5001a);
-	sh5001a_cva_reset(sh5001a);
-	mdelay(200);
-}
-
 static void sh5001a_osc_freq(struct sh5001a_data *sh5001a)
 {
 	u32 reg_val;
@@ -915,7 +835,7 @@ static void sh5001a_acc_config(struct sh5001a_data *sh5001a,
 	reg_val = (reg_val & 0xFCU) | accFilter | accByPass;
 	regmap_write(sh5001a->regmap, SH5001_ACC_CONF0, reg_val);
 
-	sh5001a_set_acc_sampel_rate(sh5001a, accODR);
+	sh5001a_set_acc_sample_rate(sh5001a, accODR);
 	sh5001a_set_acc_scale(sh5001a, accRange);
 	sh5001a_set_acc_low_pass_filter(sh5001a, accCutOffFreq);
 }
@@ -930,27 +850,9 @@ static void sh5001a_gyro_config(struct sh5001a_data *sh5001a,
 	reg_val = (reg_val & 0x7CU) | gyroFilter | gyroByPass;
 	regmap_write(sh5001a->regmap, SH5001_GYRO_CONF0, reg_val);
 
-	sh5001a_set_gyro_sampel_rate(sh5001a, gyroODR);
+	sh5001a_set_gyro_sample_rate(sh5001a, gyroODR);
 	sh5001a_set_gyro_scale(sh5001a, gyroRange);
 	sh5001a_set_gyro_low_pass_filter(sh5001a, gyroCutOffFreq);
-}
-
-static void sh5001a_imu_data_stablize(struct sh5001a_data *sh5001a)
-{
-	u32 reg_val;
-
-	regmap_read(sh5001a->regmap, SH5001_ACC_CONF0, &reg_val);
-	reg_val &= 0xFE;
-	regmap_write(sh5001a->regmap, SH5001_ACC_CONF0, reg_val);
-	reg_val |= 0x1;
-	regmap_write(sh5001a->regmap, SH5001_ACC_CONF0, reg_val);
-
-	//gyro
-	regmap_read(sh5001a->regmap, SH5001_GYRO_CONF0, &reg_val);
-	reg_val &= 0xFE;
-	regmap_write(sh5001a->regmap, SH5001_GYRO_CONF0, reg_val);
-	reg_val |= 0x1;
-	regmap_write(sh5001a->regmap, SH5001_GYRO_CONF0, reg_val);
 }
 
 static void sh5001a_temp_config(struct sh5001a_data *sh5001a,
@@ -962,7 +864,7 @@ static void sh5001a_temp_config(struct sh5001a_data *sh5001a,
 	regmap_read(sh5001a->regmap, SH5001_TEMP_CONF0, &reg_val);
 	reg_val = (reg_val & 0xF8U) | tempEnable;
 	regmap_write(sh5001a->regmap, SH5001_TEMP_CONF0, reg_val);
-	sh5001a_set_temp_sampel_rate(sh5001a, tempODR);
+	sh5001a_set_temp_sample_rate(sh5001a, tempODR);
 }
 
 static void sh5001a_int_config(struct sh5001a_data *sh5001a,
@@ -1154,67 +1056,6 @@ void sh5001a_init_fifo(struct sh5001a_data *sh5001a)
 	sh5001a_int_enable(sh5001a, SH5001_INT_FIFO_WATERMARK, SH5001_INT_EN, SH5001_INT_MAP_INT0);
 }
 
-static void sh5001a_adjust_Cf(struct sh5001a_data *sh5001a)
-{
-	u8 reg_addr[15] = {
-		0x8C, 0x8D, 0x8E, 0x8F, 0x98, 0x99, 0x9A, 0x9B,
-		0xA4, 0xA5, 0xA6, 0xA7, 0xC4, 0xC5, 0xC6};
-	u8 regDataold[15] = {0};
-	u8 regDatanew[15] = {0};
-	u16 OldData[6] = {0};
-	u16 NewData[6] = {0};
-	int i = 0;
-
-	regmap_read(sh5001a->regmap, reg_addr[12], (u32 *)&regDataold[12]);
-	dev_info(sh5001a->dev, "Adjust read %x= %x\r\n", reg_addr[12], regDataold[12]);
-	if(regDataold[12] != 0x06)
-		return;
-
-	for(i = 0; i < 15; i++) {
-		regmap_read(sh5001a->regmap, reg_addr[i], (u32 *)&regDataold[i]);
-		dev_info(sh5001a->dev, "Adjust read = %x\r\n", regDataold[i]);
-	}
-
-	OldData[0] = (u16)(regDataold[1] << 8 | regDataold[0]);
-	OldData[1] = (u16)(regDataold[3] << 8 | regDataold[2]);
-	OldData[2] = (u16)(regDataold[5] << 8 | regDataold[4]);
-	OldData[3] = (u16)(regDataold[7] << 8 | regDataold[6]);
-	OldData[4] = (u16)(regDataold[9] << 8 | regDataold[8]);
-	OldData[5] = (u16)(regDataold[11] << 8 | regDataold[10]);
-
-	NewData[0] = OldData[0] * 1693 / 1000;
-	NewData[1] = (OldData[1] * 588 - 91000) / 1000;
-	NewData[2] = (OldData[2] * 1693) / 1000;
-	NewData[3] = (OldData[3] * 585 - 313000) / 1000;
-	NewData[4] = OldData[4] * 1679 / 1000;
-	NewData[5] = (OldData[5] * 590 - 143000) / 1000;
-
-	dev_info(sh5001a->dev, "OldData %d %d %d %d %d %d \r\n",
-		OldData[0], OldData[1], OldData[2], OldData[3], OldData[4], OldData[5]);
-	dev_info(sh5001a->dev, "NewData %d %d %d %d %d %d \r\n",
-		NewData[0], NewData[1], NewData[2], NewData[3], NewData[4], NewData[5]);
-
-	regDatanew[0] = NewData[0] & 0xFF;
-	regDatanew[1] = (NewData[0] >> 8) & 0xFF;
-	regDatanew[2] = NewData[1] & 0xFF;
-	regDatanew[3] = (NewData[1] >> 8) & 0xFF;
-	regDatanew[4] = NewData[2] & 0xFF;
-	regDatanew[5] = (NewData[2] >> 8) & 0xFF;
-	regDatanew[6] = NewData[3] & 0xFF;
-	regDatanew[7] = (NewData[3] >> 8) & 0xFF;
-	regDatanew[8] = NewData[4] & 0xFF;
-	regDatanew[9] = (NewData[4] >> 8) & 0xFF;
-	regDatanew[10] = NewData[5] & 0xFF;
-	regDatanew[11] = (NewData[5] >> 8) & 0xFF;
-	regDatanew[12] = 0x04;
-	regDatanew[13] = 0x04;
-	regDatanew[14] = 0x04;
-
-	for(i = 0; i < 15; i++) {
-		regmap_write(sh5001a->regmap, reg_addr[i], (u32)regDatanew[i]);
-	}
-}
-
 static int sh5001a_init(struct sh5001a_data *sh5001a)
 {
 	//sh5001a_module_reset(sh5001a);
@@ -1228,12 +1069,9 @@ static int sh5001a_init(struct sh5001a_data *sh5001a)
 	// 800Hz, X\Y\Z 2000deg/s, cut off Freq(BW)=291Hz, enable filter;
 	sh5001a_gyro_config(sh5001a, 125, 2000, 400000,
 		SH5001_GYRO_FILTER_EN, SH5001_GYRO_BYPASS_EN);
-	//sh5001a_imu_data_stablize(sh5001a);
 
 	// temperature ODR is 125Hz, enable temperature measurement
 	sh5001a_temp_config(sh5001a, 125, SH5001_TEMP_EN);
-
-	sh5001a_adjust_Cf(sh5001a);
 
 	return 0;
 }
@@ -1518,6 +1356,6 @@ void sh5001a_shutdown(struct device *dev)
 	sh5001a_remove(dev);
 }
 
-MODULE_AUTHOR("<zhiwen.liang@hollyland-tech.com>");
+MODULE_AUTHOR("<897420073@qq.com>");
 MODULE_DESCRIPTION("Driver for sh5001a");
 MODULE_LICENSE("GPL and additional rights");
