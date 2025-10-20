@@ -361,8 +361,10 @@ void ssd2828_mipi_write(struct spi_device *spi, uint8_t DT, int data, ...)
 		pack_data[len++] = in_data;
 	}
 
-	if (len > 256)
+	if (len > 256) {
+		va_end(param_list);
 		return;
+	}
 
 	switch (DT) {
 		case 0x39:
