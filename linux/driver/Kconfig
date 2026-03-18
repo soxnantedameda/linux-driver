@@ -107,6 +107,7 @@ help
 	aw35616 type-C otg.
 
 source "drivers/hollyland/sh5001a/Kconfig"
+source "drivers/hollyland/qma6101t/Kconfig"
 
 endif
 

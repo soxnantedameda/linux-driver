@@ -15,3 +15,4 @@ obj-$(CONFIG_HISI_SVB)					+= hisi_svb/
 obj-$(CONFIG_AW87559)					+= aw87559/
 obj-$(CONFIG_AW89402)					+= aw89402/
 obj-$(CONFIG_AW35616)					+= aw35616/
+obj-$(CONFIG_QMA6101T)					+= qma6101t/

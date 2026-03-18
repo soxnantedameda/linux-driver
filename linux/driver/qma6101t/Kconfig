@@ -1,0 +1,27 @@
+config QMA6101T
+	tristate "Qstcorp 3-Axis Accelerometer QMA6101T"
+	depends on (SPI || I2C) && IIO
+	select IIO_TRIGGER
+	select IIO_TRIGGERED_BUFFER
+	default n
+	help
+		qma6101t 3d sensor
+
+if QMA6101T
+
+choice
+	bool "QMA6101T mode selection"
+
+config QMA6101T_SPI
+	bool "spi mode"
+	depends on QMA6101T && SPI
+	select REGMAP_SPI
+
+config QMA6101T_I2C
+	bool "i2c mode"
+	depends on QMA6101T && I2C
+	select REGMAP_I2C
+
+endchoice
+
+endif
