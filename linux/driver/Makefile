@@ -17,3 +17,4 @@ obj-$(CONFIG_AW89402)					+= aw89402/
 obj-$(CONFIG_AW35616)					+= aw35616/
 obj-$(CONFIG_QMA6101T)					+= qma6101t/
 obj-$(CONFIG_MS5110S)					+= ms5110s/
+obj-$(CONFIG_SIP1206)					+= sip1206/
