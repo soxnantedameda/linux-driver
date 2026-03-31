@@ -106,6 +106,15 @@ default n
 help
 	aw35616 type-C otg.
 
+config MS5110S
+	tristate "ms5110s adc driver"
+	default n
+	depends on I2C && IIO
+	select IIO_BUFFER
+	select IIO_TRIGGERED_BUFFER
+	help
+		ms5110s adc driver.
+
 source "drivers/hollyland/sh5001a/Kconfig"
 source "drivers/hollyland/qma6101t/Kconfig"
 
