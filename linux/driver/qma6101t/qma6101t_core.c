@@ -442,7 +442,7 @@ static int qma6101t_reset(struct qma6101t_data *qma6101t)
 	u32 val = 0;
 	u32 i = 5;
 
-	qma6101t_set_mode(qma6101t, 1);
+	qma6101t_set_mode(qma6101t, true);
 
 	regmap_write(qma6101t->regmap, QMA6101T_SW_RESET, QMA6101T_SW_RESET_VAL);
 	while (i) {
@@ -546,7 +546,7 @@ int qma6101t_suspend(struct device *dev)
 {
 	struct qma6101t_data *qma6101t = dev_get_drvdata(dev);
 
-	qma6101t_set_mode(qma6101t, true);
+	qma6101t_set_mode(qma6101t, false);
 
 	return 0;
 }
@@ -555,7 +555,7 @@ int qma6101t_resume(struct device *dev)
 {
 	struct qma6101t_data *qma6101t = dev_get_drvdata(dev);
 
-	qma6101t_set_mode(qma6101t, false);
+	qma6101t_set_mode(qma6101t, true);
 
 	return 0;
 }
